@@ -1,3 +1,5 @@
+import random
+
 class Individual:
     def __init__(self):
         self.fitness = -1
@@ -55,3 +57,29 @@ def crossOver(parent1, parent2, childPopulation):
     return child
 
 
+def evaluateFitness(individual):
+    fill = sum(individual.items.values())
+    individual.fitness = fill / individual.binSize
+    return individual.fitness
+
+
+def mutate(individual):
+    if not individual.items:
+        return individual
+
+    key = random.choice(list(individual.items.keys()))
+    individual.items.pop(key)
+
+    individual.fitness = -1
+    return individual
+
+def selectAccepted(population):
+    for ind in population:
+        if ind.fitness == -1:
+            evaluateFitness(ind)
+
+    sortedPop = sorted(population, key=lambda x: x.fitness, reverse=True)
+
+    half = len(sortedPop) // 2
+    selected = sortedPop[:half]
+    return selected
