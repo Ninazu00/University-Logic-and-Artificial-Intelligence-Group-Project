@@ -9,6 +9,7 @@ class Individual:
         return fillAmount/binSize
 
 binSize = 10
+populationSize = 50
 
 totalItems = {}
 selectedIndividuals = []
@@ -25,6 +26,21 @@ def updateBeliefs(selectedIndividuals,beliefs):
     minFill = min(value.getFillRate(binSize) for value in selectedIndividuals)
     beliefs["min-bin-fill"] = minFill
 
+def weightedPick(choices, top5):
+    weights = []
+    for item in choices:
+        if item in top5:
+            weights.append(3)
+        else:
+            weights.append(1)
+    return random.choices(choices, weights = weights, k = 1)[0]
+
+
+def applyBeliefs(beliefs):
+    newIndividuals = []
+    for i in range(1,populationSize//2):
+        individual = Individual()
+        
 
 childPopulation = []
 p1 = Individual(binSize)
