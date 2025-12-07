@@ -22,15 +22,16 @@ def updateBeliefs(selectedIndividuals,beliefs):
     beliefs["top-5-items"] = sorted(itemsAppearances,key = itemsAppearances.get, reverse = True)[:5]
     minFill = min(value.getFillRate() for value in selectedIndividuals)
 
-binCapacity = 100
+
 childPopulation = []
 p1 = Individual(binCapacity)
 p2 = Individual(binCapacity)
 p1.items = {"A": 10, "B": 20}
 p2.items = {"C": 15, "D": 5}
 
-def crossOver(parent1, parent2, childPopulation, binCapacity):
-    child = Individual(binCapacity)
+def crossOver(parent1, parent2, childPopulation):
+   
+    child = Individual(parent1.binSize)
     used_ids = set()
     parent_order = [parent1.items, parent2.items]
     turn = 0
@@ -41,7 +42,7 @@ def crossOver(parent1, parent2, childPopulation, binCapacity):
             if item_id in used_ids:
                 continue
             current_child_size = sum(child.items.values())
-            if current_child_size + item_size <= binCapacity:
+            if current_child_size + item_size <= child.binSize:
                 child.items[item_id] = item_size
                 used_ids.add(item_id)
                 added = True
@@ -51,4 +52,5 @@ def crossOver(parent1, parent2, childPopulation, binCapacity):
         turn = 1 - turn
     childPopulation.append(child)
     return child
+
 
