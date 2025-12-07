@@ -24,8 +24,8 @@ def updateBeliefs(selectedIndividuals,beliefs):
 
 
 childPopulation = []
-p1 = Individual(binCapacity)
-p2 = Individual(binCapacity)
+p1 = Individual(binSize)
+p2 = Individual(binSize)
 p1.items = {"A": 10, "B": 20}
 p2.items = {"C": 15, "D": 5}
 
