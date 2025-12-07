@@ -18,7 +18,7 @@ populationSize = 50
 
 totalItems = {}
 selectedIndividuals = []
-beliefs = {"min-bin-fill":0,"top-5-items":[]}
+beliefs = {"min-bin-fill":1,"top-5-items":[]}
 def updateBeliefs(selectedIndividuals,beliefs):
     #Keeps count of how many each item appeared in a solution based on its key
     itemsAppearances = {}
@@ -41,16 +41,19 @@ def weightedPick(choices, top5):
     return random.choices(choices, weights = weights, k = 1)[0]
 
 
-def applyBeliefs(beliefs):
+def applyBeliefs(beliefs,totalItems):
     newIndividuals = []
-    availableItems = list(totalItems.keys())
     for i in range(1,populationSize//2):
+        availableItems = list(totalItems.keys())
         individual = Individual()
         while individual.getFillRate(binSize) < beliefs["min-bin-fill"]:
-            if individual.addItem(weightedPick(availableItems, beliefs["top-5-items"]), totalItems[weightedPick(availableItems, beliefs["top-5-items"])], binSize):
-                continue
+            itemID = weightedPick(availableItems, beliefs["top-5-items"])
+            if individual.addItem(itemID, totalItems[itemID], binSize):
+                availableItems.remove(itemID)
             else:
                 break
+        newIndividuals.append(individual)
+    return newIndividuals
 childPopulation = []
 p1 = Individual()
 p2 = Individual()
