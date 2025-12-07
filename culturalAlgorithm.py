@@ -111,3 +111,15 @@ def selectAccepted(population):
     half = len(sortedPop) // 2
     selected = sortedPop[:half]
     return selected
+
+def initializePopulation():
+    population = []
+    for _ in range(populationSize):
+        individual = Individual()
+        items_list = list(totalItems.items())
+        random.shuffle(items_list)
+        for item_id, item_size in items_list:
+            individual.addItem(item_id, item_size, binSize)
+        population.append(individual)
+    return population
+
