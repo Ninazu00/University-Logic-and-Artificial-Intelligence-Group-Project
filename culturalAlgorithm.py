@@ -43,10 +43,10 @@ def applyBeliefs(beliefs):
         
 
 childPopulation = []
-p1 = Individual(binSize)
-p2 = Individual(binSize)
-p1.items = {"A": 10, "B": 20}
-p2.items = {"C": 15, "D": 5}
+p1 = Individual()
+p2 = Individual()
+p1.items = {"A": 3, "B": 4}
+p2.items = {"C": 5, "D": 2}
 
 def crossOver(parent1, parent2, childPopulation):
    
