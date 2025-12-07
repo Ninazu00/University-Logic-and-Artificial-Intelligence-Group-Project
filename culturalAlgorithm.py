@@ -175,7 +175,7 @@ mutationRate = 0.1
 totalItems = {}
 maxGenerations = 100
 
-totalItems = initializeTotalItems(3,7,20)
+totalItems = initializeTotalItems(3,7,2000)
 bestBin = generateBinCulturalAlgorithm(maxGenerations, populationSize, mutationRate, totalItems, binSize)
 print("Items in best bin:", bestBin.items)
 print("Best bin fill rate:", bestBin.getFillRate(binSize))
