@@ -7,7 +7,10 @@ populationSize = 50
 mutationRate = 0.1
 maxGenerations = 100
 #Generates the list of items based on parameters given by the user
-totalItems = culturalAlgorithm.initializeTotalItems(3,7,2000)
+minBinSize = 3
+maxBinSize = 7
+numberOfItems = 2000
+totalItems = culturalAlgorithm.initializeTotalItems(minBinSize,maxBinSize,numberOfItems)
 #User inputted value for the bin size
 binSize = 10
 binAmount = 0
