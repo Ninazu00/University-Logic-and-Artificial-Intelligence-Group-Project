@@ -180,12 +180,14 @@ totalItems = initializeTotalItems(3,7,20)
 bestBin = generateBinCulturalAlgorithm(maxGenerations, populationSize, mutationRate, totalItems, binSize)
 print("Items in best bin:", bestBin.items)
 print("Best bin fill rate:", bestBin.getFillRate(binSize))
-
+binAmount = 0
 while totalItems:
     for itemID in bestBin.items.keys():
         totalItems.pop(itemID, None)
     if not totalItems:
         break
     bestBin = generateBinCulturalAlgorithm(maxGenerations, populationSize, mutationRate, totalItems, binSize)
+    binAmount += 1
     print("Items in best bin:", bestBin.items)
     print("Best bin fill rate:", bestBin.getFillRate(binSize))
+print("Total number of bins used: ", binAmount)
