@@ -8,24 +8,26 @@ class GUI:
         self.root.geometry("1920x1080")
         #Graph frame
         self.binGraphFrame = tk.Frame(self.root)
-        self.binGraphFrame.pack(expand=True)
         #Left graph for backtracking
         self.leftFrame = tk.Frame(self.binGraphFrame)
         self.leftFrame.pack(side="left", padx=20)
-        self.binGraphLeft = tk.Text(self.leftFrame, font=("Courier", 16),width=45)
-        self.binGraphLeft.pack(side="left",padx=20, pady=20)
-        self.leftLabel = tk.Label(self.leftFrame, text="Algorithm 1", font=("Courier", 16))
+        self.leftLabel = tk.Label(self.leftFrame, text="Backtracking algorithm result", font=("Courier", 16))
+        self.leftLabel.pack()
+        self.binGraphLeft = tk.Text(self.leftFrame, font=("Courier", 16), width=45)
+        self.binGraphLeft.pack(padx=20, pady=20)
         #Right graph for cultural algorithm
         self.rightFrame = tk.Frame(self.binGraphFrame)
         self.rightFrame.pack(side="left", padx=20)
-        self.rightLabel = tk.Label(self.rightFrame, text="Algorithm 2", font=("Arial", 16))
-        self.binGraphRight = tk.Text(self.binGraphFrame, font=("Courier", 16),width=45)
-        self.binGraphRight.pack(side="left",padx=20, pady=20)
+        self.rightLabel = tk.Label(self.rightFrame, text="Cultural algorithm result", font=("Courier", 16))
+        self.rightLabel.pack()
+        self.binGraphRight = tk.Text(self.rightFrame, font=("Courier", 16), width=45)
+        self.binGraphRight.pack(padx=20, pady=20)
 
         # Container for all controls (instructions + inputs + dropdown)
         self.topFrame = tk.Frame(self.root)
         self.topFrame.pack(side="top", pady=20)
-
+        #Container for all algorithm graphs
+        self.binGraphFrame.pack(expand=True)
         # Instructions
         self.instructions = tk.Label(
             self.topFrame,
