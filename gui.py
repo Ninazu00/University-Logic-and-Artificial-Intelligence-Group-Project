@@ -11,7 +11,7 @@ class GUI:
         #Left graph for backtracking
         self.leftFrame = tk.Frame(self.binGraphFrame)
         self.leftFrame.pack(side="left", padx=20)
-        self.leftLabel = tk.Label(self.leftFrame, text="Backtracking algorithm result", font=("Courier", 16))
+        self.leftLabel =  tk.Label(self.leftFrame, text="Backtracking algorithm result", font=("Courier", 16))
         self.leftLabel.pack()
         self.binGraphLeft = tk.Text(self.leftFrame, font=("Courier", 16), width=45)
         self.binGraphLeft.pack(padx=20, pady=20)
@@ -100,7 +100,3 @@ class GUI:
         self.binGraphRight.config(state="disabled")
         self.binGraphRight.see("end")
         return bar
-
-test = GUI()
-
-test.root.mainloop()
