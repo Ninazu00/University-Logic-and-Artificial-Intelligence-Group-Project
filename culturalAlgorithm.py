@@ -153,6 +153,7 @@ def initializeTotalItems(minSize,maxSize,numItems):
 
 def generateBinCulturalAlgorithm(maxGenerations, populationSize, mutationRate, totalItems, binSize):
     generation = 0
+    print(totalItems)
     population = initializePopulation(populationSize,totalItems,binSize)
     beliefs = {"min-bin-fill":1,"top-5-items":[]}
     while not terminateCondition(generation, maxGenerations, population,binSize):
@@ -182,3 +183,4 @@ def culturalAlgorithmFullSolve(populationSize,mutationRate,maxGenerations,totalI
         print("Items in bin:", bestBin.items.values())
         print("Fill rate:", bestBin.getFillRate(binSize))
         print("Total number of bins used: ", binAmount)
+    return binAmount

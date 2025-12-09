@@ -39,7 +39,7 @@ class GUI:
             justify="center")
         self.instructions.pack(pady=10)
 
-        # Min/Max inputs
+        # Inputs
         self.inputFrame = tk.Frame(self.topFrame)
         self.inputFrame.pack(pady=10)
 
@@ -52,6 +52,10 @@ class GUI:
         tk.Label(self.inputFrame, text="Number of Items:").grid(row=0, column=4, padx=10)
         self.itemNumber = tk.Entry(self.inputFrame, width=10)
         self.itemNumber.grid(row=0, column=5, padx=10)
+        tk.Label(self.inputFrame, text="Bin Capacity:").grid(row=0, column=6, padx=10)
+        self.binCapacity = tk.Entry(self.inputFrame, width=10)
+        self.binCapacity.grid(row=0, column=7, padx=10)
+
 
         # Dropdown menu for algorithms
         self.algoFrame = tk.Frame(self.topFrame)
@@ -95,20 +99,20 @@ class GUI:
         self.lastSelection["value"] = choice
         self.selectedAlgo.set(choice)
 
-    def drawBinFillLeft(self,fillRate, binNumber):
+    def drawBinFillRight(self,fillRate, binNumber):
         barlength = 20
         filled = int(fillRate*barlength)
         empty = barlength - filled
         bar = f"Bin {binNumber} : "
         bar += "|" + ("█"*filled) + ("-"*empty) + "| " + str(fillRate*100) + "%"
         newText = "\n" + bar
-        self.binGraphLeft.config(state="normal")
-        self.binGraphLeft.insert("end", newText + "\n")
-        self.binGraphLeft.config(state="disabled")
-        self.binGraphLeft.see("end")
+        self.binGraphRight.config(state="normal")
+        self.binGraphRight.insert("end", newText + "\n")
+        self.binGraphRight.config(state="disabled")
+        self.binGraphRight.see("end")
         return bar
     
-    def drawBinFillRight(self, bestSolution):
+    def drawBinFillLeft(self, bestSolution):
         for binNumber, binItems in enumerate(bestSolution, start=1):
             binCapacityUsed = sum(binItems)
             binCapacityTotal = self.binCapacity 
@@ -118,20 +122,20 @@ class GUI:
             empty = barlength - filled
             bar = f"Bin {binNumber} : "
             bar += "|" + ("█"*filled) + ("-"*empty) + "| " + f"{fillRate*100:.1f}%"
-            self.binGraphRight.insert("end", bar + "\n")        
-        self.binGraphRight.config(state="disabled")
-        self.binGraphRight.see("end")
+            self.binGraphLeft.insert("end", bar + "\n")        
+        self.binGraphLeft.config(state="disabled")
+        self.binGraphLeft.see("end")
         return bar
 
     def runAlgorithm(self):
         minSize = int(self.entMinSize.get())
         maxSize = int(self.entMaxSize.get())
         numItems = int(self.itemNumber.get())
-        binSize = 10
-        choice =  self.algoDropdown = ttk.OptionMenu.get()
+        binSize = int(self.binCapacity.get())
+        choice =  self.selectedAlgo.get()
 
         items = culturalAlgorithm.initializeTotalItems(minSize, maxSize, numItems)
-
+        itemsCA = items.copy()
         if choice == "Backtracking":
             start = time.time()
             solBT = backtrackingAlgorithm.solveBinPacking(items, binSize)
@@ -142,16 +146,23 @@ class GUI:
             test.btBinsLabel.config(text=f"Backtracking bins: {len(solBT)}")
 
         elif choice == "Cultural Algorithm":
-            start = time.time()
-            solCA = culturalAlgorithm.generateBinCulturalAlgorithm(100, 50, 0.2, numItems, binSize)
-            end = time.time()
-            caTime = (end - start) * 1000.0
-
-            test.caTimeLabel.config(text=f"Cultural Algorithm time: {caTime:.2f} ms")
-            test.caBinsLabel.config(text=f"Cultural Algorithm bins: {len(solCA)}")
+            #Fine tuning variables for the cultural algorithm
+            populationSize = 50
+            mutationRate = 0.1
+            maxGenerations = 100
+            #Needed values to be passed
+            bestBin = culturalAlgorithm.Individual()
+            #Starting time before running the cultural algorithm
+            startTimeCA = time.time()
+            #Calls the cultural algorithm
+            binAmountCA = culturalAlgorithm.culturalAlgorithmFullSolve(populationSize,mutationRate,maxGenerations,itemsCA,binSize,bestBin,self)
+            #Calculates the time it took the cultural algorithm to run
+            elapsedTimeCA = time.time()- startTimeCA
+            print("Time elapsed: ", elapsedTimeCA) 
+            test.caTimeLabel.config(text=f"Cultural Algorithm time: {elapsedTimeCA:.2f} ms")
+            test.caBinsLabel.config(text=f"Cultural Algorithm bins: {binAmountCA}")
 
         else:  
-
             startBT = time.time()
             solBT = backtrackingAlgorithm.solveBinPacking(items, binSize)
             endBT = time.time()
@@ -169,26 +180,25 @@ class GUI:
             test.caTimeLabel.config(text=f"Cultural Algorithm time: {caTime:.2f} ms")
             test.caBinsLabel.config(text=f"Cultural Algorithm bins: {len(solCA)}")
 
+            #Cultural Algorithm Run
+            #Fine tuning variables for the cultural algorithm
+            populationSize = 50
+            mutationRate = 0.1
+            maxGenerations = 100
+            #Needed values to be passed
+            bestBin = culturalAlgorithm.Individual()
+            #Starting time before running the cultural algorithm
+            startTimeCA = time.time()
+            #Calls the cultural algorithm
+            binAmountCA = culturalAlgorithm.culturalAlgorithmFullSolve(populationSize,mutationRate,maxGenerations,itemsCA,binSize,bestBin,self)
+            #Calculates the time it took the cultural algorithm to run
+            elapsedTimeCA = time.time()- startTimeCA
+            print("Time elapsed: ", elapsedTimeCA) 
+            test.caTimeLabel.config(text=f"Cultural Algorithm time: {elapsedTimeCA:.2f} ms")
+            test.caBinsLabel.config(text=f"Cultural Algorithm bins: {binAmountCA}")
+
     
     
 
 test = GUI()
-
-
-
 test.root.mainloop()
-'''
-    def drawBinFillRight(self,bestSolution):
-        for binNumber, binItems in enumerate(bestSolution, start=1):
-            binCapacityUsed = sum(binItems)
-            binCapacityTotal = self.binCapacity 
-            barlength = 20
-            filled = int(fillRate * barlength)
-            empty = barlength - filled
-            bar = f"Bin {binNumber} : "
-            bar += "|" + ("█"*filled) + ("-"*empty) + "| " + f"{fillRate*100:.1f}%"
-            self.binGraphRight.insert("end", bar + "\n")        
-        self.binGraphRight.config(state="disabled")
-        self.binGraphRight.see("end")
-        return bar
-'''
