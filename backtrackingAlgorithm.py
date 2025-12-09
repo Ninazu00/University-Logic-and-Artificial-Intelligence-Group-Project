@@ -150,6 +150,5 @@ def solveBinPacking(items, binCapacity):
     start = time.time()
     backtrack(0, usedBins, binRemainingCapacities,
               binCapacity, bestSolution, sortedItems)
-    end = time.time()
-    execTime = (end - start) * 1000.0
+    execTime = time.time() - start
     return bestSolution, execTime

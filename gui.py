@@ -2,7 +2,7 @@ import tkinter as tk
 import time
 import culturalAlgorithm
 import backtrackingAlgorithm
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 class GUI:
     def __init__(self):
@@ -111,19 +111,18 @@ class GUI:
         return bar
     
     def drawBinFillLeft(self, bestSolution):
+        maxBinSum = max(sum(binItems) for binItems in bestSolution)
         for binNumber, binItems in enumerate(bestSolution, start=1):
             binCapacityUsed = sum(binItems)
-            binCapacityTotal = self.binCapacity 
             barlength = 20
-            fillRate = binCapacityUsed / binCapacityTotal
+            fillRate = binCapacityUsed / maxBinSum 
             filled = int(fillRate * barlength)
             empty = barlength - filled
             bar = f"Bin {binNumber} : "
-            bar += "|" + ("█"*filled) + ("-"*empty) + "| " + f"{fillRate*100:.1f}%"
-            self.binGraphLeft.insert("end", bar + "\n")        
+            bar += "|" + ("█"*filled) + ("-"*empty) + "| " + f"{(binCapacityUsed / maxBinSum)*100:.1f}%"
+            self.binGraphLeft.insert("end", bar + "\n" + "\n")        
         self.binGraphLeft.config(state="disabled")
         self.binGraphLeft.see("end")
-        return bar
 
     def runAlgorithm(self):
         minSize = int(self.entMinSize.get())
@@ -134,15 +133,15 @@ class GUI:
         items = culturalAlgorithm.initializeTotalItems(minSize, maxSize, numItems)
         itemsCA = items.copy()
         sizes = list(items.values())
+
         if choice == "Backtracking Algorithm":
-            start = time.time()
-            solBT = backtrackingAlgorithm.solveBinPacking(sizes, binSize)
-            end = time.time()
-            btTime = (end - start) * 1000.0
-            print(solBT)
-            self.drawBinFillLeft(solBT)
-            self.btTimeLabel.config(text=f"Backtracking time: {btTime:.2f} ms")
-            self.btBinsLabel.config(text=f"Backtracking bins: {len(solBT)}")
+            bestSolutionBT, execTimeBT = backtrackingAlgorithm.solveBinPacking(items, binSize)
+
+            self.drawBinFillLeft(bestSolutionBT)
+            self.btTimeLabel.config(text=f"Backtracking time: {execTimeBT:.2f} ms")
+            self.btBinsLabel.config(text=f"Backtracking bins: {len(bestSolutionBT)}")
+            print("Time elapsed: ", execTimeBT)
+            
 
         elif choice == "Cultural Algorithm":
             #Fine tuning variables for the cultural algorithm
@@ -161,14 +160,11 @@ class GUI:
             self.caTimeLabel.config(text=f"Cultural Algorithm time: {elapsedTimeCA:.2f} ms")
             self.caBinsLabel.config(text=f"Cultural Algorithm bins: {binAmountCA}")
         else:  
-            startBT = time.time()
-            solBT = backtrackingAlgorithm.solveBinPacking(items, binSize)
-            endBT = time.time()
+            bestSolutionBT, execTimeBT = backtrackingAlgorithm.solveBinPacking(items, binSize)
 
-            btTime = (endBT - startBT) * 1000.0
-
-            self.btTimeLabel.config(text=f"Backtracking time: {btTime:.2f} ms")
-            self.btBinsLabel.config(text=f"Backtracking bins: {len(solBT)}")
+            self.drawBinFillLeft(bestSolutionBT)
+            self.btTimeLabel.config(text=f"Backtracking time: {execTimeBT:.2f} ms")
+            self.btBinsLabel.config(text=f"Backtracking bins: {len(bestSolutionBT)}")
 
             #Cultural Algorithm Run
             #Fine tuning variables for the cultural algorithm
