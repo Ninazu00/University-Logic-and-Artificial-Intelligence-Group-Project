@@ -30,7 +30,7 @@ def placeItem(item, binIndex, usedBins, binRemainingCapacities):
 
 def removeItem(item, binIndex, usedBins, binRemainingCapacities):
     """
-    This function removes an item from a specific bin and restores its remaining capacity.
+    This function removes the last item from a specific bin and restores its remaining capacity.
 
     Arguments:
         item (float): Size of the item to remove.
@@ -40,8 +40,9 @@ def removeItem(item, binIndex, usedBins, binRemainingCapacities):
 
     Returns: None
     """
-    usedBins[binIndex].remove(item)
-    binRemainingCapacities[binIndex] += item
+    removed = usedBins[binIndex].pop()
+    binRemainingCapacities[binIndex] += removed
+
 
 def calculateLowerBound(remainingItems, binCapacity):
     totalSize = sum(remainingItems)
