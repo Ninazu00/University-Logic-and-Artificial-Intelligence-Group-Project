@@ -79,12 +79,12 @@ class GUI:
         self.runButton = tk.Button(self.topFrame, text="Run", font=("Helvetica", 14), command=self.runAlgorithm)
         self.runButton.pack(pady=20)
 
-        self.btTimeLabel = tk.Label(self.leftFrame, text="Backtracking time: 0 ms")
+        self.btTimeLabel = tk.Label(self.leftFrame, text="Backtracking time: 0 S")
         self.btTimeLabel.pack()
         self.btBinsLabel = tk.Label(self.leftFrame, text="Backtracking bins: 0")
         self.btBinsLabel.pack()
 
-        self.caTimeLabel = tk.Label(self.rightFrame, text="Cultural Algorithm time: 0 ms")
+        self.caTimeLabel = tk.Label(self.rightFrame, text="Cultural Algorithm time: 0 S")
         self.caTimeLabel.pack()
         self.caBinsLabel = tk.Label(self.rightFrame, text="Cultural Algorithm bins: 0")
         self.caBinsLabel.pack()
@@ -140,7 +140,7 @@ class GUI:
             self.drawBinFillLeft(bestSolutionBT)
             elapsedTimeBT = time.time()- startTimeBT
             print("Time elapsed for Backtracking: ", elapsedTimeBT)
-            self.btTimeLabel.config(text=f"Backtracking time: {execTimeBT:.2f} S")
+            self.btTimeLabel.config(text=f"Backtracking time: {execTimeBT:.7f} S")
             self.btBinsLabel.config(text=f"Backtracking bins: {len(bestSolutionBT)}")
 
         elif choice == "Cultural Algorithm":
@@ -164,7 +164,7 @@ class GUI:
             startTimeBT = time.time()
             self.drawBinFillLeft(bestSolutionBT)
             elapsedTimeBT = time.time()- startTimeBT
-            self.btTimeLabel.config(text=f"Backtracking time: {elapsedTimeBT:.2f} S")
+            self.btTimeLabel.config(text=f"Backtracking time: {elapsedTimeBT:.7f} S")
             self.btBinsLabel.config(text=f"Backtracking bins: {len(bestSolutionBT)}")
             #Cultural Algorithm Run
             #Fine tuning variables for the cultural algorithm
